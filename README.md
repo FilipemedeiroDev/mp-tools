@@ -4,10 +4,16 @@ Ferramentas internas Multipedidos para Claude Code.
 
 ## Instalação
 
-### 1. Instalar o plugin
+### 1. Adicionar o marketplace
 
 ```bash
-claude plugin install github:FilipemedeiroDev/mp-tools
+claude plugin marketplace add FilipemedeiroDev/mp-tools
+```
+
+### 2. Instalar o plugin
+
+```bash
+claude plugin install mp-tools
 ```
 
 ### 2. Configurar o Jira (primeira vez)
