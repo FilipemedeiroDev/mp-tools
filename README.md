@@ -29,7 +29,14 @@ As credenciais ficam salvas localmente em `~/.claude/settings.json` e nunca saem
 
 ### `/mp-tools:jira`
 
-Cria cards e subtasks no Jira direto pelo Claude.
+Cria cards, adiciona subtasks e move cards entre colunas no Jira direto pelo Claude.
+
+**Mover card para outra coluna:**
+```
+/mp-tools:jira TP-146 -> Em Progresso
+/mp-tools:jira TP-146 -> Done
+/mp-tools:jira TP-146 -> A Fazer
+```
 
 **Adicionar subtasks em card existente:**
 ```
