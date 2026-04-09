@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "mp-tools",
+  "description": "Ferramentas internas Multipedidos para Claude Code",
+  "owner": {
+    "name": "FilipemedeiroDev",
+    "email": ""
+  },
+  "plugins": [
+    {
+      "name": "mp-tools",
+      "description": "Skills Jira para criar cards, adicionar subtasks e mover cards entre colunas",
+      "category": "productivity",
+      "source": ".",
+      "homepage": "https://github.com/FilipemedeiroDev/mp-tools"
+    }
+  ]
+}
