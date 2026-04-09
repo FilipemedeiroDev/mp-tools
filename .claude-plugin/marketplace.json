@@ -11,7 +11,10 @@
       "name": "mp-tools",
       "description": "Skills Jira para criar cards, adicionar subtasks e mover cards entre colunas",
       "category": "productivity",
-      "source": "github:FilipemedeiroDev/mp-tools",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/FilipemedeiroDev/mp-tools.git"
+      },
       "homepage": "https://github.com/FilipemedeiroDev/mp-tools"
     }
   ]
