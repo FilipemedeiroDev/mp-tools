@@ -16,7 +16,7 @@ claude plugin marketplace add FilipemedeiroDev/mp-tools
 claude plugin install mp-tools
 ```
 
-### 2. Configurar o Jira (primeira vez)
+### 3. Configurar o Jira (primeira vez)
 
 ```bash
 /mp-tools:jira-setup
@@ -55,6 +55,16 @@ Cria cards, adiciona subtasks e move cards entre colunas no Jira direto pelo Cla
 /mp-tools:jira TP "Título do card" 5pts | Subtask 1 | Subtask 2
 /mp-tools:jira TP "Título do card" 5pts
 /mp-tools:jira TP "Título do card"
+```
+
+---
+
+## Atualizações
+
+Novas skills e melhorias são entregues via atualização do repositório. Para receber:
+
+```bash
+claude plugin marketplace refresh
 ```
 
 ---
