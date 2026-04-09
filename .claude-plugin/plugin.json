@@ -1,0 +1,9 @@
+{
+  "name": "mp-tools",
+  "description": "Ferramentas internas Multipedidos — integração com Jira.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Multipedidos"
+  },
+  "keywords": ["jira", "multipedidos", "productivity"]
+}
