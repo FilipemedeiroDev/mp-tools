@@ -1,7 +1,7 @@
 ---
 name: "jira"
-description: "Cria cards no Jira ou adiciona subtasks em cards existentes, com pontuação."
-argument-hint: "[CARD-KEY] sub1 | sub2  —ou—  [PROJECT-KEY] 'Título' [Xpts] [sub1 | sub2]"
+description: "Cria cards no Jira, adiciona subtasks em cards existentes, ou move um card para outra coluna."
+argument-hint: "[CARD-KEY] sub1 | sub2  —ou—  [PROJECT-KEY] 'Título' [Xpts] [sub1 | sub2]  —ou—  [CARD-KEY] -> 'Status'"
 user-invocable: true
 disable-model-invocation: true
 ---
@@ -23,6 +23,13 @@ Se algum estiver ausente, parar e exibir:
 
 ## Modos de uso
 
+**Modo C — Mover card para outra coluna**
+```
+TP-146 -> Em Progresso
+TP-146 → Done
+TP-146 -> A Fazer
+```
+
 **Modo A — Adicionar subtasks em card existente**
 ```
 TP-146 | Subtask 1 | Subtask 2 | Subtask 3
@@ -40,16 +47,72 @@ TP "Título do card"
 
 ### 1. Detectar o modo
 
+- Input contém `->` ou `→` → **Modo C**
 - Primeiro token contém número (ex: `TP-146`) → **Modo A**
 - Primeiro token é só letras (ex: `TP`) → **Modo B**
 
 Extrair:
 - `CARD_KEY` ou `PROJECT_KEY`
+- `STATUS_DESTINO` — texto após `->` ou `→` (Modo C)
 - `TITULO` (Modo B)
 - `PONTOS` — número antes de `pt`, `pts` ou `sp` — opcional
 - `SUBTASKS` — lista separada por `|` — opcional
 
-### 2. Carregar credenciais
+### 2. Modo C — Mover card
+
+Buscar transições disponíveis para o card:
+
+```bash
+python3 -c "
+import json, base64, urllib.request
+with open('/home/$USER/.claude/settings.json') as f:
+    env = json.load(f).get('env', {})
+domain = env['JIRA_DOMAIN']
+token = base64.b64encode(f\"{env['JIRA_EMAIL']}:{env['JIRA_API_TOKEN']}\".encode()).decode()
+req = urllib.request.Request(
+    f'https://{domain}.atlassian.net/rest/api/3/issue/$CARD_KEY/transitions',
+    headers={'Authorization': f'Basic {token}'}
+)
+data = json.loads(urllib.request.urlopen(req).read())
+for t in data['transitions']:
+    print(t['id'], t['name'])
+"
+```
+
+Encontrar a transição cujo nome corresponda (parcial, case-insensitive) ao `STATUS_DESTINO`.
+
+Se não encontrar, exibir os status disponíveis e parar:
+```
+✗ Status "X" não encontrado. Transições disponíveis:
+  - A Fazer
+  - Em Progresso
+  - Concluído
+```
+
+Se encontrar, executar a transição:
+
+```bash
+python3 -c "
+import json, base64, urllib.request
+with open('/home/$USER/.claude/settings.json') as f:
+    env = json.load(f).get('env', {})
+domain = env['JIRA_DOMAIN']
+token = base64.b64encode(f\"{env['JIRA_EMAIL']}:{env['JIRA_API_TOKEN']}\".encode()).decode()
+body = json.dumps({'transition': {'id': '$TRANSITION_ID'}}).encode()
+req = urllib.request.Request(
+    f'https://{domain}.atlassian.net/rest/api/3/issue/$CARD_KEY/transitions',
+    data=body,
+    headers={'Authorization': f'Basic {token}', 'Content-Type': 'application/json'},
+    method='POST'
+)
+urllib.request.urlopen(req)
+print('ok')
+"
+```
+
+HTTP 204 = sucesso. Exibir relatório e parar.
+
+### 3. Carregar credenciais
 
 ```bash
 python3 -c "
@@ -60,7 +123,7 @@ print(env['JIRA_DOMAIN'], env['JIRA_EMAIL'], env['JIRA_API_TOKEN'], env.get('JIR
 "
 ```
 
-### 3. Modo A — Buscar card existente
+### 4. Modo A — Buscar card existente
 
 ```bash
 python3 -c "
@@ -71,7 +134,7 @@ import json, base64, urllib.request
 
 Exibir o título do card encontrado antes de criar qualquer coisa.
 
-### 4. Modo B — Criar card novo
+### 5. Modo B — Criar card novo
 
 ```bash
 python3 -c "
@@ -80,7 +143,7 @@ import json, base64, urllib.request
 "
 ```
 
-### 5. Pontuar (se informado)
+### 6. Pontuar (se informado)
 
 ```bash
 python3 -c "
@@ -95,7 +158,7 @@ Se retornar erro 400 no campo de pontos, exibir:
    Execute: /mp-tools:jira-setup para reconfigurar.
 ```
 
-### 6. Criar subtasks (se informadas)
+### 7. Criar subtasks (se informadas)
 
 Para cada item da lista separada por `|`, criar com issuetype `Subtarefa`:
 
@@ -106,7 +169,7 @@ import json, base64, urllib.request
 "
 ```
 
-### 7. Relatório final
+### 8. Relatório final
 
 **Modo B (novo)**:
 ```
@@ -126,4 +189,10 @@ import json, base64, urllib.request
 
   ├── TP-43 — Subtask 1
   └── TP-44 — Subtask 2
+```
+
+**Modo C (mover)**:
+```
+✓ TP-146 movido para "Em Progresso"
+  https://<domínio>.atlassian.net/browse/TP-146
 ```
