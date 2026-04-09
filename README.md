@@ -7,7 +7,7 @@ Ferramentas internas Multipedidos para Claude Code.
 ### 1. Instalar o plugin
 
 ```bash
-claude plugin install github:filipemedeiro/mp-tools
+claude plugin install github:FilipemedeiroDev/mp-tools
 ```
 
 ### 2. Configurar o Jira (primeira vez)
@@ -56,5 +56,5 @@ Cria cards, adiciona subtasks e move cards entre colunas no Jira direto pelo Cla
 ## Desinstalação
 
 ```bash
-claude plugin uninstall mp-tools
+claude plugin uninstall FilipemedeiroDev/mp-tools
 ```
