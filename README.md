@@ -16,55 +16,26 @@ claude plugin marketplace add FilipemedeiroDev/mp-tools
 claude plugin install mp-tools
 ```
 
-### 3. Configurar o Jira (primeira vez)
-
-```bash
-/mp-tools:jira-setup
-```
-
-O comando vai pedir:
-- E-mail do Jira
-- URL da empresa (ex: `https://suaempresa.atlassian.net`)
-- API Token — gere em: https://id.atlassian.com/manage-profile/security/api-tokens
-
-As credenciais ficam salvas localmente em `~/.claude/settings.json` e nunca saem da sua máquina.
-
 ---
 
 ## Skills disponíveis
 
-### `/mp-tools:jira`
+### `/mp-tools:refatorar-tela`
 
-Cria cards, adiciona subtasks e move cards entre colunas no Jira direto pelo Claude.
+Refatora uma página do pedirdelivery para o novo layout — separação via flag, sem Ionic no bloco novo, HTML/CSS puro com BEM e componentização obrigatória.
 
-**Mover card para outra coluna:**
+**Uso:**
 ```
-/mp-tools:jira TP-146 -> Em Progresso
-/mp-tools:jira TP-146 -> Done
-/mp-tools:jira TP-146 -> A Fazer
-```
-
-**Adicionar subtasks em card existente:**
-```
-/mp-tools:jira TP-146 | Subtask 1 | Subtask 2 | Subtask 3
-/mp-tools:jira TP-146 3pts | Subtask 1 | Subtask 2
-```
-
-**Criar card novo:**
-```
-/mp-tools:jira TP "Título do card" 5pts | Subtask 1 | Subtask 2
-/mp-tools:jira TP "Título do card" 5pts
-/mp-tools:jira TP "Título do card"
+/mp-tools:refatorar-tela nome-da-pagina
+/mp-tools:refatorar-tela shopping-cart https://figma.com/...
 ```
 
 ---
 
 ## Atualizações
 
-Novas skills e melhorias são entregues via atualização do repositório. Para receber:
-
 ```bash
-claude plugin marketplace refresh
+claude plugin marketplace update mp-tools
 ```
 
 ---
@@ -72,5 +43,5 @@ claude plugin marketplace refresh
 ## Desinstalação
 
 ```bash
-claude plugin uninstall FilipemedeiroDev/mp-tools
+claude plugin uninstall mp-tools
 ```

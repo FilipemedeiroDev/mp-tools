@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "mp-tools",
-      "description": "Skills Jira para criar cards, adicionar subtasks e mover cards entre colunas",
+      "description": "Skills internas Multipedidos para refatoração de telas do pedirdelivery",
       "category": "productivity",
       "source": {
         "source": "url",
